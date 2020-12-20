@@ -2,6 +2,6 @@
 
 ## Create .env file and add variable like this:
 
-SERVER_PORT = 8081\n
-MYSQL_URL = ''\n
-JWT_SECRET = 'thangdeptrai'\n
+SERVER_PORT = 8081<br/>
+MYSQL_URL = ''<br/>
+JWT_SECRET = 'thangdeptrai'<br/>
