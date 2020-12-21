@@ -1,11 +1,11 @@
 import * as authDAL from './AuthDAL';
 
-import * as jwtUtil from '../../util/JwtUtils';
-import * as bcryptUtil from '../../util/BcryptUtil';
+import * as jwtUtil from '../../util/Jwt';
+import * as Bcrypt from '../../util/Bcrypt';
 import { commonResponse } from "../../util/ResponseForm";
 import { TOKEN } from "../../constant/Token";
 import { ERRORS } from '../../constant/Errors';
-import { hash, compare } from '../../util/BcryptUtil';
+import { hash, compare } from '../../util/Bcrypt';
 
 export const login = async (req, res, next) => {
     const { username, password } = req.body;

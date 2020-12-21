@@ -1,4 +1,4 @@
-import * as dbUtil from '../../util/DatabaseUtil';
+import * as dbUtil from '../../util/Database';
 
 export const getUserByUsername = async (username, password) => {
     const sql = 'select * from account where username = ?';

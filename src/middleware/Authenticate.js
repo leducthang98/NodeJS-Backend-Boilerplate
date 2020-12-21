@@ -1,5 +1,5 @@
 import { ERRORS } from "../constant/Errors";
-import * as jwtUtil from '../util/JwtUtils';
+import * as jwtUtil from '../util/Jwt';
 
 // json-web-token filter
 export const jwtFilter = async (req, res, next) => {
