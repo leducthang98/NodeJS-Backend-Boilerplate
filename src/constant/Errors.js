@@ -7,5 +7,6 @@ export const ERRORS = {
   INVALID_USERNAME_OR_PASSWORD_ERROR: createError.BadRequest('Username or password incorrect'),
   NOTHING_CHANGED: createError.BadGateway('Nothing change'),
   TOKEN_REQUIRED: createError.Forbidden('Token required'),
-  INVALID_INPUT_PARAMS: createError.BadRequest('Invalid input params')
+  INVALID_INPUT_PARAMS: createError.BadRequest('Invalid input params'),
+  TOKEN_NOT_ALLOWED: createError.BadRequest('Token not allowed')
 };

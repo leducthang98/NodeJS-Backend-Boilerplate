@@ -1,3 +1,4 @@
+import { STATUS } from "../constant/Status";
 import { commonResponse } from "../util/ResponseForm";
 
 export const controllerHandler = f => async (req, res, next) => {
@@ -11,20 +12,19 @@ export const controllerHandler = f => async (req, res, next) => {
 export const errorHandler = (error, req, res, next) => {
   if (typeof error === 'string') {
     res.status(500);
-    res.send(commonResponse(error, 2, 'server-error'))
+    res.send(commonResponse(error, STATUS.SERVER_ERROR.CODE, STATUS.SERVER_ERROR.MESSAGE))
   } else {
-    let code = -1;
-    let message = 'unknown-error';
+    let code = STATUS.UNKNOWN_ERROR.CODE;
+    let message = STATUS.UNKNOWN_ERROR.MESSAGE;
     if (error.status >= 400 && error.status <= 499) {
-      code = 1;
-      message = 'client-error';
+      code = STATUS.CLIENT_ERROR.CODE;
+      message = STATUS.CLIENT_ERROR.MESSAGE;
     } else {
       console.log(error)
-      code = 2;
-      message = 'server-error'
+      code = STATUS.SERVER_ERROR.CODE;
+      message = STATUS.SERVER_ERROR.MESSAGE;
     }
     res.status(error.status || 500);
-    
     res.send(commonResponse(error.toString(), code, message))
   }
 };
