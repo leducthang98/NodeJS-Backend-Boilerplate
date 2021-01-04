@@ -35,3 +35,19 @@ export const login = async (req, res, next) => {
         next(ERRORS.INVALID_INPUT_PARAMS)
     }
 }
+
+export const regist = async (req, res, next) => {
+    const { username, password } = req.body;
+    if (username && password) {
+        const user = await authDAL.getUserByUsername(username);
+        if (user) {
+            next('Đã tồn tại người dùng này')
+        } else {
+            const passwordHash = hash(password);
+            await authDAL.createNewAccount(username, passwordHash);
+            res.send(commonResponse(req.body))
+        }
+    } else {
+        next(ERRORS.INVALID_INPUT_PARAMS)
+    }
+}
