@@ -11,20 +11,21 @@ export const controllerHandler = f => async (req, res, next) => {
 
 export const errorHandler = (error, req, res, next) => {
   if (typeof error === 'string') {
-    res.status(500);
-    res.send(commonResponse(error, STATUS.SERVER_ERROR.CODE, STATUS.SERVER_ERROR.MESSAGE))
+    res.status(400);
+    res.send(commonResponse(null, 2, error))
   } else {
-    let code = STATUS.UNKNOWN_ERROR.CODE;
-    let message = STATUS.UNKNOWN_ERROR.MESSAGE;
+    let code = -1;
+    let message = 'unknown-error';
     if (error.status >= 400 && error.status <= 499) {
-      code = STATUS.CLIENT_ERROR.CODE;
-      message = STATUS.CLIENT_ERROR.MESSAGE;
+      code = 1;
+      message = 'client-error';
     } else {
       console.log(error)
-      code = STATUS.SERVER_ERROR.CODE;
-      message = STATUS.SERVER_ERROR.MESSAGE;
+      code = 2;
+      message = 'server-error'
     }
     res.status(error.status || 500);
-    res.send(commonResponse(error.toString(), code, message))
+
+    res.send(commonResponse(null, code, error?.message))
   }
 };

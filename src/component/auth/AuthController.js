@@ -1,5 +1,4 @@
 import * as authDAL from './AuthDAL';
-
 import * as jwtUtil from '../../util/Jwt';
 import * as Bcrypt from '../../util/Bcrypt';
 import { commonResponse } from "../../util/ResponseForm";
@@ -11,12 +10,14 @@ export const login = async (req, res, next) => {
     const { username, password } = req.body;
     if (username && password) {
         const user = await authDAL.getUserByUsername(username);
+        console.log(user)
         if (user) {
             const isPasswordValid = await compare(password, user.password);
             if (isPasswordValid) {
                 let data = {
                     userId: user.id,
-                    username: user.username
+                    username: user.username,
+                    role: user.role || 'none'
                 }
                 const token = await jwtUtil.generateToken(data, { expiresIn: TOKEN.TOKEN_EXPIRED })
                 let tokenInfo = {
