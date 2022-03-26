@@ -6,6 +6,6 @@ export const redisConnection = redis.createClient({
     host: CommonConfig.REDIS.HOST
 })
 redisConnection.on('error', (err) => {
-    console.log("Redis-error " + err);
+    // console.log("Redis-error " + err);
   });
   

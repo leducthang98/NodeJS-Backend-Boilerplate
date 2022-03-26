@@ -6,6 +6,7 @@
   "scripts": {
     "deploy": "node ./dist",
     "start": "nodemon --exec babel-node src",
+    "generate": "node src/codegen",
     "build": "npm run clean && mkdir dist && babel src -d dist --copy-files",
     "clean": "rm -rf dist",
     "test": "mocha",
