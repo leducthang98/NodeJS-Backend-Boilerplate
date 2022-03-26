@@ -9,3 +9,12 @@
 * step 1: create table in database
 * step 2: npm run generate
 
+## codegen critical resource:
+* Router 
+* controllerHandler
+* jwtFilter
+* commonResponse
+* jwtUtil
+* dbUtil
+* uuid
+* src/component/route.js
