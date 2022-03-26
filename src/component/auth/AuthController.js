@@ -1,6 +1,5 @@
 import * as authDAL from './AuthDAL';
 import * as jwtUtil from '../../util/Jwt';
-import * as Bcrypt from '../../util/Bcrypt';
 import { commonResponse } from "../../util/ResponseForm";
 import { TOKEN } from "../../constant/Token";
 import { ERRORS } from '../../constant/Errors';

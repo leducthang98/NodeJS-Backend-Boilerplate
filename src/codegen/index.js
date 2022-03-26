@@ -2,7 +2,7 @@ const { MYSQL_URL, MYSQL_DB } = require('../config/CommonConfig');
 const mysql = require('mysql');
 const fs = require('fs');
 const path = require('path');
-const { getContentRouter } = require('./formatRouter')
+const { getContentRouter, getContentController } = require('./formatModule')
 
 console.log('Suggest: Tables and Columns should be cammelCase!')
 
@@ -58,7 +58,7 @@ async function createModule(tableInfo) {
     // create controller
     let dirController = path.join(__dirname, `/../../src/component/${tableInfo.name}/${tableNameUpperCase}Controller.js`)
     await new Promise((res, rej) => {
-        let contentController = '// controller'
+        let contentController = getContentController(tableNameUpperCase, tableInfo.name)
         fs.writeFile(dirController, contentController, (err) => {
             if (err) rej(err);
             res()
@@ -105,12 +105,21 @@ async function createModule(tableInfo) {
             res()
         });
     })
-
 }
 
 async function execute() {
     let listTables = await getGenerateTable()
     let modules = fs.readdirSync(path.join(__dirname, '/../../src/component'));
+      // backup version of router.js
+      const routerContent = fs.readFileSync(path.join(__dirname, '/../../src/component/router.js')).toString()
+      let dirBackupRootRouter = path.join(__dirname, `/../../src/component/prev.router.js`)
+      await new Promise((res, rej) => {
+          fs.writeFile(dirBackupRootRouter, routerContent, (err) => {
+              if (err) rej(err);
+              res()
+          });
+      })
+
     for (const table of listTables) {
         if (!modules.includes(table.name)) {
             await createModule(table)
