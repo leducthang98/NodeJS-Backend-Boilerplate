@@ -2,7 +2,7 @@ const { MYSQL_URL, MYSQL_DB } = require('../config/CommonConfig');
 const mysql = require('mysql');
 const fs = require('fs');
 const path = require('path');
-const { getContentRouter, getContentController } = require('./formatModule')
+const { getContentRouter, getContentController, getContentDAL } = require('./formatModule')
 
 console.log('Suggest: Tables and Columns should be cammelCase!')
 
@@ -68,7 +68,7 @@ async function createModule(tableInfo) {
     // create DAL
     let dirDAL = path.join(__dirname, `/../../src/component/${tableInfo.name}/${tableNameUpperCase}DAL.js`)
     await new Promise((res, rej) => {
-        let contentDAL = '// DAL'
+        let contentDAL = getContentDAL(tableNameUpperCase, tableInfo.name)
         fs.writeFile(dirDAL, contentDAL, (err) => {
             if (err) rej(err);
             res()
@@ -99,7 +99,7 @@ async function createModule(tableInfo) {
     let dirRootRouter = path.join(__dirname, `/../../src/component/router.js`)
     await new Promise((res, rej) => {
         let contentRootRouter = routerNewContent
-        
+
         fs.writeFile(dirRootRouter, contentRootRouter, (err) => {
             if (err) rej(err);
             res()
@@ -110,15 +110,15 @@ async function createModule(tableInfo) {
 async function execute() {
     let listTables = await getGenerateTable()
     let modules = fs.readdirSync(path.join(__dirname, '/../../src/component'));
-      // backup version of router.js
-      const routerContent = fs.readFileSync(path.join(__dirname, '/../../src/component/router.js')).toString()
-      let dirBackupRootRouter = path.join(__dirname, `/../../src/component/prev.router.js`)
-      await new Promise((res, rej) => {
-          fs.writeFile(dirBackupRootRouter, routerContent, (err) => {
-              if (err) rej(err);
-              res()
-          });
-      })
+    // backup version of router.js
+    const routerContent = fs.readFileSync(path.join(__dirname, '/../../src/component/router.js')).toString()
+    let dirBackupRootRouter = path.join(__dirname, `/../../src/component/prev.router.js`)
+    await new Promise((res, rej) => {
+        fs.writeFile(dirBackupRootRouter, routerContent, (err) => {
+            if (err) rej(err);
+            res()
+        });
+    })
 
     for (const table of listTables) {
         if (!modules.includes(table.name)) {
