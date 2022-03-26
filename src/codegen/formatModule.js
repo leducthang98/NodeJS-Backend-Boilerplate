@@ -62,7 +62,7 @@ export const getList${tableNameUpperCase}DAL = async () => {
 }
     
 export const get${tableNameUpperCase}ByIdDAL = async (id) => {
-    const sql = 'select * from ${tableNameLowwerCase} where id = ?';
+    const sql = 'select * from \`${tableNameLowwerCase}\` where id = ?';
     const result = await dbUtil.queryOne(sql, [id]);
     return result;
 }

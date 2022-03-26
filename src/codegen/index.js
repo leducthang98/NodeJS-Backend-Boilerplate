@@ -29,10 +29,14 @@ async function getGenerateTable() {
                     try {
                         const cols = await new Promise((res, rej) => {
                             const listCols = []
-                            conn.query(`select COLUMN_NAME from information_schema.columns where table_schema = '${MYSQL_DB}' and table_name = '${listTables[i].name}'`, (err, results) => {
+                            conn.query(`select * from information_schema.columns where table_schema = '${MYSQL_DB}' and table_name = '${listTables[i].name}'`, (err, results) => {
                                 if (err) rej(err)
                                 for (const res of results) {
-                                    listCols.push(res.COLUMN_NAME)
+                                    listCols.push({
+                                        name: res.COLUMN_NAME,
+                                        type: res.DATA_TYPE,
+                                        nullable: res.IS_NULLABLE
+                                    })
                                 }
                                 res(listCols)
                             })
@@ -110,6 +114,7 @@ async function createModule(tableInfo) {
 async function execute() {
     let listTables = await getGenerateTable()
     let modules = fs.readdirSync(path.join(__dirname, '/../../src/component'));
+
     // backup version of router.js
     const routerContent = fs.readFileSync(path.join(__dirname, '/../../src/component/router.js')).toString()
     let dirBackupRootRouter = path.join(__dirname, `/../../src/component/prev.router.js`)
